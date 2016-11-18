@@ -16,7 +16,7 @@ public class Graph {
 	public boolean insert_node(int n_data ){
     
     	Node Nodo = new Node(n_data);
-    	g_nodes.add(Nodo);
+    	g_nodes.addElement(Nodo);
         cont++;
     	return true;
     	
@@ -42,32 +42,38 @@ public class Graph {
             if(g_nodes.get(i).n_data==node_a) Na=g_nodes.get(i);
             if(g_nodes.get(i).n_data==node_b) Nb=g_nodes.get(i);
         }
-        Edge delete_node=null;
-        for(int i=0; i<g_nodes.size(); i++)
-            for(int j=0; j<g_nodes.get(i).n_edges.size(); j++)
-                if((g_nodes.get(i).n_edges.get(j)).e_data==_data && (g_nodes.get(i).n_edges.get(j)).e_node[0]==Na && (g_nodes.get(i).n_edges.get(j)).e_node[1]==Nb)
-                    g_nodes.get(i).n_edges.remove(j);
         
-        for(int i=0; i<g_edges.size(); i++)
-            if(g_edges.get(i).e_data ==_data && g_edges.get(i).e_node[0]==Na && g_edges.get(i).e_node[1]==Nb){
+        /*for(int i=0; i<g_nodes.size(); i++)
+            for(int j=0; j<g_nodes.get(i).n_edges.size(); j++)
+                if(g_nodes.get(i).n_edges.get(j).e_data==_data && g_nodes.get(i).n_edges.get(j).e_node[0]==Na && g_nodes.get(i).n_edges.get(j).e_node[1]==Nb)
+                g_nodes.get(i).n_edges.remove(j);*/
+        
+        
+        for(int i=0; i<g_edges.size(); i++){
+            Edge delete_node=null;
+        	if(g_edges.get(i).e_data ==_data && g_edges.get(i).e_node[0]==Na && g_edges.get(i).e_node[1]==Nb){
                 delete_node=g_edges.get(i);
                 g_edges.remove(i);
                 delete_node=null;
             }
+        }
         return true;	
     }
     
-    public boolean remove_node(int _data){
    
-        Node delete_node=null;
+   public boolean remove_node(int _data){
+   Node delete_node=null;
+           
         for(int i=0; i<g_nodes.size(); i++)
-            if((g_nodes.get(i)).n_data==_data){
-                delete_node= g_nodes.get(i);
-                for(int j=0; j<(g_nodes.get(i)).n_edges.size(); j++)
-                    remove_edge( g_nodes.get(i).n_edges.get(j).e_data, g_nodes.get(i).n_edges.get(j).e_node[0].n_data,  g_nodes.get(i).n_edges.get(j).e_node[1].n_data);
+        {
+            if(g_nodes.get(i).n_data==_data){
+                delete_node= g_nodes.get(i);   
+            	for(int j=0; j<g_nodes.get(i).n_edges.size(); j++)
+                	remove_edge( g_nodes.get(i).n_edges.get(j).e_data, g_nodes.get(i).n_edges.get(j).e_node[0].n_data,  g_nodes.get(i).n_edges.get(j).e_node[1].n_data);
                 g_nodes.remove(i);
                 delete_node=null;
             }
+        }
         	cont--;
    	return true;
     }
@@ -78,7 +84,7 @@ public class Graph {
     	for(int i=0; i<g_nodes.size();i++)
     	    System.out.print(g_nodes.get(i).n_data+ " ");
     	    System.out.println(" ");
-	    	System.out.println("Artistas");
+	    	System.out.println("Aristas");
     	    for(int i=0; i<g_edges.size(); i++){
     	    	System.out.print(g_edges.get(i).e_node[0].n_data);
     	    	System.out.print(" -- "+g_edges.get(i).e_data);

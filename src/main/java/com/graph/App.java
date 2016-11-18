@@ -10,14 +10,21 @@ public class App {
 			
 	    cgraph.insert_node(2);
 	    cgraph.insert_node(3);
-	    
+	    cgraph.insert_node(4);
+	    cgraph.insert_node(5);
+	        
 	    
 	    cgraph.insert_edge(10,1,2,true);
 	    cgraph.insert_edge(20,1,3,true);
-	    cgraph.insert_edge(30,2,3,true);
-	   
+	    cgraph.insert_edge(30,2,4,true);
+	    cgraph.insert_edge(40,3,5,false);
+	       
+	    
 	    cgraph.print();
-	    cgraph.remove_node(2);
+	    
+	    cgraph.remove_node(1);
+	    cgraph.remove_edge(40,3,5);
+	    
 	    cgraph.print();
 	    
 	    //cgraph.to_matrix();
