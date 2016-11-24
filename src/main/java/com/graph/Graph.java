@@ -10,7 +10,7 @@ public class Graph {
 
 	public int cont=0;
 	public Vector<Integer> vec_node= new Vector<Integer>();
-	   
+	public int [][] matrix;   
 	
     
 	public boolean insert_node(int n_data ){
@@ -98,7 +98,7 @@ public class Graph {
     }
 	
     public void to_matrix(){
-        int [][] matrix= new int[cont][cont];
+        matrix= new int[cont][cont];
         for(int i=0; i<cont; i++)
         	for(int j=0; j<cont; j++)
         		matrix[i][j]=0;
@@ -113,20 +113,29 @@ public class Graph {
             if(!g_edges.get(i).e_dir)
                 matrix[aux2][aux1]=g_edges.get(i).e_data;
         }
-       
-    	System.out.println("Grafo a Matriz");
+    	
+    	print_matrix(matrix);
+    }   
+    	
+    
+    public void print_matrix( int [][] m){
+
+    		
+    	System.out.println("Matriz");
     	System.out.print("   ");
-    	for(int i=0; i<g_nodes.size();i++)
+    	
+    	int n=m.length;
+    	for(int i=0; i<n;i++)
     		System.out.print(g_nodes.get(i).n_data+" ");
     	System.out.println("   ");
-        for(int i=0; i<g_nodes.size();i++)
+        for(int i=0; i<n;i++)
         	System.out.print("-  ");
         System.out.println(" ");
 		       
-        for(int i=0;i<cont;i++){
+        for(int i=0;i<n;i++){
         	System.out.print(g_nodes.get(i).n_data+ "| ");
-        	for(int j=0;j<cont;j++)
-        		System.out.print(matrix[i][j]+ " ");
+        	for(int j=0;j<n;j++)
+        		System.out.print(m[i][j]+ " ");
         	System.out.println(" ");
     	}
      /*for (int i=0;i<vec_nodes.size();i++)
@@ -135,7 +144,7 @@ public class Graph {
     }
     
     public void to_graph1(){
-       
+      
     vec_node.add(10); 	insert_node(10);
     vec_node.add(20); 	insert_node(20);
     vec_node.add(30); 	insert_node(30);    
@@ -190,5 +199,94 @@ public class Graph {
     print();
 
     }
+    public void kruskal(){
+       
+    	System.out.println("Kruskal");
+    	int cn= g_nodes.size();
+    	int [][]arbol=new int [cn][cn];
+        int [] pertenece= new int [cn]; 
+        
+        for(int i = 0; i < cn; i++){
+            //arbol[i] = 0;
+            pertenece[i] = i;
+        }
+        
+      for(int i = 0; i < cn; i++)
+        	for(int j = 0; j < cn; j++)
+        	arbol[i][j] = 0;            
 
-}
+
+        int nodoA=0;
+        int nodoB=0;
+        int arcos = 1;
+        while(arcos < cn){
+            
+        	int min = 9999;
+            for(int i = 0; i < cn; i++){
+                for(int j = 0; j < cn; j++)
+                    if(min > matrix[i][j] && matrix[i][j]!=0 && pertenece[i] != pertenece[j])
+                    {
+                        min = matrix[i][j];
+                        nodoA = i;
+                        nodoB = j;
+                    }
+            }
+            
+            // Si los nodos no pertenecen al mismo árbol agrego el arco al árbol mínimo.
+            if(pertenece[nodoA] != pertenece[nodoB]){
+                arbol[nodoA][nodoB] = min;
+                arbol[nodoB][nodoA] = min;
+
+                // Todos los nodos del árbol del nodoB ahora pertenecen al árbol del nodoA.
+            	int temp = pertenece[nodoB];
+            	pertenece[nodoB] = pertenece[nodoA];
+            	for(int k = 0; k < cn; k++)
+            		if(pertenece[k] == temp)
+            			pertenece[k] = pertenece[nodoA];
+                
+                arcos++;
+            }
+        }
+        print_matrix(arbol);
+    }
+    
+    public void prim(){
+    	int cn=g_nodes.size();
+    	int [][]p=new int[10][10];
+    	Vector<Integer> lines=new Vector<Integer>();
+    	    	
+    	int [][]arbol=new int[cn][cn];
+    	for(int i = 0; i < cn; i++)
+        	for(int j = 0; j < cn; j++)
+        	arbol[i][j] =9999 ;            
+
+    	
+    	int padre = 0;
+        int hijo = 0;
+        while(lines.size()+ 1 < cn){
+            padre = hijo;
+            lines.add(padre);
+            for(int i = 0; i < cn; i++)
+                matrix[i][padre] = 9999;
+
+            int min = 9999;
+            for(int it=0; it< lines.size(); it++)
+                for(int i = 0; i < cn; i++)
+                    if(min > matrix[it][i]){
+                        min = matrix[it][i];
+                        padre = lines.get(it);
+                        hijo = i;
+                    }
+
+            arbol[padre][hijo] = min;
+            arbol[hijo][padre] = min;
+        }
+        print_matrix(arbol);
+    }
+    
+    
+  }
+    
+    
+
+
